@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FocusFlow - Login</title>
+
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .auth-box {
+        width: 400px;
+        max-width: 100%;
+        margin: auto;
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .auth-box h1 {
+        margin-bottom: 10px;
+        color: #4f46e5;
+    }
+
+    .auth-box > p {
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .auth-box form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .auth-box input {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-size: 15px;
+        outline: none;
+    }
+
+    .auth-box input:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .auth-box form button {
+        padding: 13px;
+        background: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .auth-box form button:hover {
+        background: #4338ca;
+    }
+
+    .auth-box a {
+        color: #4f46e5;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .auth-box a:hover {
+        text-decoration: underline;
+    }
+
+    /* FocusFlow Popup */
+
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .popup-box {
+        width: 350px;
+        max-width: 90%;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        animation: popupShow 0.25s ease;
+    }
+
+    .popup-icon {
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+
+    .popup-box h2 {
+        color: #4f46e5;
+        margin: 5px 0 10px;
+    }
+
+    .popup-box p {
+        color: #555;
+        line-height: 1.5;
+        white-space: pre-line;
+    }
+
+    .popup-box button {
+        margin-top: 10px;
+        padding: 11px 30px;
+        background: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .popup-box button:hover {
+        background: #4338ca;
+    }
+
+    @keyframes popupShow {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .auth-box {
+            padding: 25px 20px;
+        }
+
+    }
+</style>
+
+</head>
+
+
+<body>
+
+
+    <!-- LOGIN -->
+
+    <div class="auth-container">
+
+        <div class="auth-box">
+
+            <h1>🎯 FocusFlow</h1>
+
+            <p>Welcome back!</p>
+
+
+            <form id="loginForm">
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Email"
+                    required
+                >
+
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Password"
+                    required
+                >
+
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+
+            <p>
+                Don't have an account?
+                <a href="register.html">
+                    Register
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =============================== -->
+    <!-- FOCUSFLOW POPUP -->
+    <!-- =============================== -->
+
+    <div id="focusflowPopup"
+         class="popup-overlay">
+
+        <div class="popup-box">
+
+            <div class="popup-icon">
+                🎯
+            </div>
+
+            <h2>FocusFlow</h2>
+
+            <p id="popupMessage">
+                Message
+            </p>
+
+            <button onclick="closeFocusFlowPopup()">
+                OK
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =============================== -->
+    <!-- LOGIN JAVASCRIPT -->
+    <!-- =============================== -->
+
+    <script>
+
+        document
+            .getElementById("loginForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const email =
+                        document
+                        .getElementById("loginEmail")
+                        .value
+                        .trim();
+
+
+                    const password =
+                        document
+                        .getElementById("loginPassword")
+                        .value;
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                "http://localhost:5000/api/auth/login",
+                                {
+
+                                    method: "POST",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+
+                                            email: email,
+
+                                            password: password
+
+                                        })
+
+                                }
+                            );
+
+
+                        const data =
+                            await response.json();
+
+
+                        // ===============================
+                        // LOGIN SUCCESS
+                        // ===============================
+
+                        if (response.ok) {
+
+                            localStorage.setItem(
+                                "token",
+                                data.token
+                            );
+
+
+                            localStorage.setItem(
+                                "user",
+                                JSON.stringify(data.user)
+                            );
+
+
+                            showFocusFlowPopup(
+                                "Login successful! 🎉"
+                            );
+
+
+                            setTimeout(
+                                function() {
+
+                                    window.location.href =
+                                        "index.html";
+
+                                },
+                                1200
+                            );
+
+
+                        } else {
+
+                            showFocusFlowPopup(
+                                data.message
+                            );
+
+                        }
+
+
+                    } catch (error) {
+
+                        console.log(error);
+
+
+                        showFocusFlowPopup(
+                            "Cannot connect to server!"
+                        );
+
+                    }
+
+                }
+            );
+
+
+
+        // ===============================
+        // SHOW POPUP
+        // ===============================
+
+        function showFocusFlowPopup(message) {
+
+            const popup =
+                document.getElementById(
+                    "focusflowPopup"
+                );
+
+
+            const popupMessage =
+                document.getElementById(
+                    "popupMessage"
+                );
+
+
+            popupMessage.textContent =
+                message;
+
+
+            popup.style.display =
+                "flex";
+
+        }
+
+
+
+        // ===============================
+        // CLOSE POPUP
+        // ===============================
+
+        function closeFocusFlowPopup() {
+
+            const popup =
+                document.getElementById(
+                    "focusflowPopup"
+                );
+
+
+            popup.style.display =
+                "none";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

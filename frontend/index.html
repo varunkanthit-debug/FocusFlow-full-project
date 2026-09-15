@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FocusFlow - Student Productivity Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div>
+            <h1>🎯 FocusFlow</h1>
+            <p>Plan your day. Stay focused. Achieve your goals.</p>
+        </div>
+
+        <div>
+            <button onclick="toggleDarkMode()" id="darkBtn">
+                🌙 Dark Mode
+            </button>
+
+            <button onclick="logout()">
+                🚪 Logout
+            </button>
+        </div>
+    </header>
+
+
+    <!-- DASHBOARD -->
+    <main class="dashboard">
+
+        <!-- WELCOME -->
+        <section class="welcome">
+            <h2>Welcome back, <span id="userName">Student</span>! 👋</h2>
+            <p>Let's make today productive.</p>
+        </section>
+
+
+        <!-- STATISTICS -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <h3>📋 Total Tasks</h3>
+                <p id="totalTasks">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>✅ Completed</h3>
+                <p id="completedTasks">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>⏳ Pending</h3>
+                <p id="pendingTasks">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>🔥 Streak</h3>
+                <p id="streak">0 Days</p>
+            </div>
+
+        </section>
+
+
+        <!-- TASK SECTION -->
+        <section class="card">
+
+            <h2>📋 Today's Tasks</h2>
+
+            <div class="task-input">
+
+                <input
+                    type="text"
+                    id="taskInput"
+                    placeholder="What do you want to accomplish?"
+                >
+
+                <button onclick="addTask()">
+                    ➕ Add Task
+                </button>
+
+            </div>
+
+            <ul id="taskList"></ul>
+
+        </section>
+
+
+        <!-- TIMER -->
+        <section class="card timer-box">
+
+            <h2>⏳ Focus Timer</h2>
+
+            <div id="timer">25:00</div>
+
+            <button onclick="startTimer()">
+                ▶ Start
+            </button>
+
+            <button onclick="resetTimer()">
+                🔄 Reset
+            </button>
+
+        </section>
+
+
+        <!-- CHART -->
+        <section class="card chart-box">
+
+            <h2>📊 Productivity</h2>
+
+            <canvas
+                id="taskChart"
+                width="300"
+                height="200">
+            </canvas>
+
+        </section>
+
+    </main>
+
+
+    <!-- =============================== -->
+    <!-- FOCUSFLOW CUSTOM POPUP -->
+    <!-- =============================== -->
+
+    <div id="focusflowPopup" class="popup-overlay">
+
+        <div class="popup-box">
+
+            <div class="popup-icon">
+                🎯
+            </div>
+
+            <h2>FocusFlow</h2>
+
+            <p id="popupMessage">
+                Message
+            </p>
+
+            <button onclick="closeFocusFlowPopup()">
+                OK
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- OUR JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+</html>
